@@ -7,6 +7,7 @@ class Tag(db.EmbeddedDocument):
     topic = db.StringField()
     subtopic = db.StringField()
     tag = db.StringField()
+    times = db.IntField()
 
     def __str__(self):
         return self.tag
