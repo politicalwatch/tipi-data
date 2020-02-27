@@ -1,4 +1,5 @@
 import mongoengine as db
+from mongoengine.queryset import DoesNotExist
 from . import config
 
 
@@ -9,4 +10,3 @@ db.connect(
         username=config.MONGO_USER,
         password=config.MONGO_PASSWORD
         )
-
