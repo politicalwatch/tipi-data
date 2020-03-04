@@ -1,5 +1,5 @@
 import marshmallow_mongoengine as ma
-from tipi_backend.database.models.scanned import Scanned
+from tipi_data.models.scanned import Scanned
 
 
 class ScannedSchema(ma.ModelSchema):
