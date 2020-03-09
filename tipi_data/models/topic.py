@@ -19,7 +19,6 @@ class Topic(db.Document):
     name = db.StringField()
     shortname = db.StringField()
     description = db.ListField(db.StringField())
-    icon = db.StringField()
     tags = db.EmbeddedDocumentListField(Tag)
 
     meta = {'collection': 'topics'}
