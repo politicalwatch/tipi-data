@@ -21,7 +21,11 @@ class Topic(db.Document):
     description = db.ListField(db.StringField())
     tags = db.EmbeddedDocumentListField(Tag)
 
-    meta = {'collection': 'topics'}
+    meta = {
+            'collection': 'topics'
+            'ordering': ['-name'],
+            'indexes': ['name']
+            }
     # TODO Add indexes https://mongoengine-odm.readthedocs.io/guide/defining-documents.html#indexes
 
     def __str__(self):
