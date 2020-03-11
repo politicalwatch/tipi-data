@@ -22,7 +22,7 @@ class Topic(db.Document):
     tags = db.EmbeddedDocumentListField(Tag)
 
     meta = {
-            'collection': 'topics'
+            'collection': 'topics',
             'ordering': ['-name'],
             'indexes': ['name']
             }
