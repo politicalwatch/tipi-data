@@ -23,7 +23,7 @@ class Topic(db.Document):
 
     meta = {
             'collection': 'topics',
-            'ordering': ['-name'],
+            'ordering': ['name'],
             'indexes': ['name']
             }
     # TODO Add indexes https://mongoengine-odm.readthedocs.io/guide/defining-documents.html#indexes
