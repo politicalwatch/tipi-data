@@ -7,6 +7,8 @@ class Search(db.DynamicEmbeddedDocument):
     dbsearch = db.StringField()
     created = db.DateTimeField()
     validated = db.BooleanField(default=False)
+    validation_email_sent = db.BooleanField()
+    validation_email_sent_date = db.DateTimeField()
 
     def __str__(self):
         return self.hash
