@@ -22,7 +22,6 @@ class DeputyExtendedSchema(ma.ModelSchema):
         model = Deputy
         model_skip_values = [None]
         model_fields_kwargs = {
-                'active': {'load_only': True},
                 'start_date': {'load_only': True},
                 'end_date': {'load_only': True},
                 'url': {'load_only': True},
