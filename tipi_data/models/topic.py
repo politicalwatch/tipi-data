@@ -1,7 +1,20 @@
+from mongoengine.queryset import QuerySet
+from natsort import natsorted, ns
 import itertools
 import pcre
 
 from tipi_data import db
+
+
+
+class TopicQuerySet(QuerySet):
+
+    def natsorted(self):
+        return natsorted(
+                self,
+                key=lambda x: x.name,
+                alg=ns.IGNORECASE)
+
 
 
 class Tag(db.EmbeddedDocument):
@@ -24,7 +37,8 @@ class Topic(db.Document):
     meta = {
             'collection': 'topics',
             'ordering': ['name'],
-            'indexes': ['name']
+            'indexes': ['name'],
+            'queryset_class': TopicQuerySet
             }
     # TODO Add indexes https://mongoengine-odm.readthedocs.io/guide/defining-documents.html#indexes
 
