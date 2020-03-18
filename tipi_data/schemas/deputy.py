@@ -24,5 +24,4 @@ class DeputyExtendedSchema(ma.ModelSchema):
         model_fields_kwargs = {
                 'start_date': {'load_only': True},
                 'end_date': {'load_only': True},
-                'url': {'load_only': True},
                 }
