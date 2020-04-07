@@ -9,7 +9,7 @@ class ScannedResult(db.DynamicEmbeddedDocument):
 class Scanned(db.Document):
     id = db.StringField(db_field='_id', primary_key=True)
     title = db.StringField()
-    extract = db.StringField()
+    excerpt = db.StringField()
     result = db.EmbeddedDocumentField(ScannedResult)
     created = db.DateTimeField()
 
