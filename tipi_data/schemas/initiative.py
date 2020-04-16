@@ -20,7 +20,6 @@ class InitiativeSchema(ma.ModelSchema):
                 'author_deputies': {'load_only': True},
                 'author_parliamentarygroups': {'load_only': True},
                 'author_others': {'load_only': True},
-                'created': {'load_only': True},
                 'processing': {'load_only': True},
                 'tagged': {'load_only': True},
                 }
