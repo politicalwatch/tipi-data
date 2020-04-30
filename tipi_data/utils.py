@@ -1,12 +1,10 @@
 import hashlib
 
 
-def generateId(*args):
+def generate_id(*args):
     try:
         return hashlib.sha1(
                 u''.join(args).encode('utf-8')
                 ).hexdigest()
-    except:
+    except Exception:
         return 'ID_ERROR'
-
-
