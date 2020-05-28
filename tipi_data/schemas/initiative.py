@@ -5,7 +5,8 @@ from tipi_data.models.initiative import Initiative
 
 class AuthorsField(ma.fields.Field):
     def _serialize(self, value, attr, obj):
-        return obj.author_others + obj.author_parliamentarygroups 
+        return obj.author_others + obj.author_parliamentarygroups
+
 
 class DeputiesField(ma.fields.Field):
     def _serialize(self, value, attr, obj):
@@ -22,6 +23,7 @@ class InitiativeSchema(ma.ModelSchema):
                 'author_others': {'load_only': True},
                 'processing': {'load_only': True},
                 'tagged': {'load_only': True},
+                'extra': {'load_only': True},
                 }
 
     authors = AuthorsField(attribute='author_parliamentarygroups')
@@ -34,7 +36,6 @@ class InitiativeSchema(ma.ModelSchema):
 
     def _tags_serializer(self, obj):
         return [t.tag for t in obj.tags]
-
 
 
 class InitiativeExtendedSchema(ma.ModelSchema):
@@ -60,8 +61,8 @@ class InitiativeExtendedSchema(ma.ModelSchema):
         self._process_soft_related(related)
         return related
 
-    # Soft related means that it is related but des not have any topics
+    # Soft related means that it is related but does not have any topics
     def _process_soft_related(self, related):
         for r in related:
-            if len(r['topics']) is 0:
+            if len(r['topics']) == 0:
                 del r['id']

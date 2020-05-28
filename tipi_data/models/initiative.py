@@ -31,6 +31,7 @@ class Initiative(db.DynamicDocument):
     tags = db.EmbeddedDocumentListField(Tag, default=list)
     tagged = db.BooleanField()
     url = db.URLField()
+    extra = db.DynamicField()
 
     meta = {
             'collection': 'initiatives',
