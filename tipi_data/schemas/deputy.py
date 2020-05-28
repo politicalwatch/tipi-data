@@ -14,6 +14,7 @@ class DeputySchema(ma.ModelSchema):
                 'start_date': {'load_only': True},
                 'end_date': {'load_only': True},
                 'url': {'load_only': True},
+                'extra': {'load_only': True},
                 }
 
 
