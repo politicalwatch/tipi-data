@@ -13,7 +13,7 @@ class Deputy(db.Document):
     end_date = db.DateTimeField()
     url = db.URLField()
     active = db.BooleanField()
-    extra = db.DynamicField()
+    extra = db.DictField()
 
     meta = {
             'collection': 'deputies',
