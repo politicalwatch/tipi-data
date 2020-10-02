@@ -13,7 +13,7 @@ class DeputySchema(ma.ModelSchema):
                 'twitter': {'load_only': True},
                 'facebook': {'load_only': True},
                 'constituency': {'load_only': True},
-                'public_charges': {'load_only': True},
+                'public_position': {'load_only': True},
                 'birthday': {'load_only': True},
                 'bio': {'load_only': True},
                 'start_date': {'load_only': True},
