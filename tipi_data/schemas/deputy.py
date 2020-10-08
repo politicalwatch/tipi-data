@@ -14,7 +14,6 @@ class DeputySchema(ma.ModelSchema):
                 'facebook': {'load_only': True},
                 'constituency': {'load_only': True},
                 'public_position': {'load_only': True},
-                'birthday': {'load_only': True},
                 'bio': {'load_only': True},
                 'start_date': {'load_only': True},
                 'end_date': {'load_only': True},

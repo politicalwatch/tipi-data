@@ -12,7 +12,6 @@ class Deputy(db.Document):
     facebook = db.URLField()
     constituency = db.StringField()
     public_position = db.ListField(db.StringField(), default=list)
-    birthday = db.StringField()
     bio = db.ListField(db.StringField(), default=list)
     start_date = db.DateTimeField()
     end_date = db.DateTimeField()
