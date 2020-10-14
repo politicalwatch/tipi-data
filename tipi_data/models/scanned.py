@@ -12,6 +12,7 @@ class Scanned(db.Document):
     excerpt = db.StringField()
     result = db.EmbeddedDocumentField(ScannedResult)
     created = db.DateTimeField()
+    expiration = db.DateTimeField()
 
     meta = {'collection': 'scanned'}
     # TODO Add indexes https://mongoengine-odm.readthedocs.io/guide/defining-documents.html#indexes
