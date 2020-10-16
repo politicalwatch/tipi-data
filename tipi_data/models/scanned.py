@@ -13,6 +13,7 @@ class Scanned(db.Document):
     result = db.EmbeddedDocumentField(ScannedResult)
     created = db.DateTimeField()
     expiration = db.DateTimeField()
+    verified = db.BooleanField()
 
     meta = {'collection': 'scanned'}
     # TODO Add indexes https://mongoengine-odm.readthedocs.io/guide/defining-documents.html#indexes
