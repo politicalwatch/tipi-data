@@ -25,7 +25,7 @@ class Initiative(db.DynamicDocument):
     place = db.StringField()
     created = db.DateTimeField()
     updated = db.DateTimeField()
-    processing = db.ListField(db.StringField(), default=list)
+    processing = db.StringField()
     status = db.StringField()
     topics = db.ListField(db.StringField(), default=list)
     tags = db.EmbeddedDocumentListField(Tag, default=list)
