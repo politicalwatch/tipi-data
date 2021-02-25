@@ -13,7 +13,7 @@ class Tag(db.EmbeddedDocument):
         return self.tag
 
 
-class Initiative(db.DynamicDocument):
+class Initiative(db.Document):
     id = db.StringField(db_field='_id', primary_key=True)
     title = db.StringField()
     reference = db.StringField()
@@ -31,6 +31,7 @@ class Initiative(db.DynamicDocument):
     tags = db.EmbeddedDocumentListField(Tag, default=list)
     tagged = db.BooleanField()
     url = db.URLField()
+    content = db.ListField(db.StringField(), default=list)
     extra = db.DictField()
 
     meta = {
