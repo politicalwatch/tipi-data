@@ -7,4 +7,6 @@ class InitiativeTypeSchema(ma.ModelSchema):
     class Meta:
         model = InitiativeType
         model_skip_values = [None]
-        model_fields_kwargs = {}
+        model_fields_kwargs = {
+                'group': {'load_only': True}
+            }
