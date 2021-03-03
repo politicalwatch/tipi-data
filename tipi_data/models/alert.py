@@ -1,4 +1,5 @@
 from tipi_data import db
+from tipi_data.models.initiative import Initiative
 
 
 class Search(db.DynamicEmbeddedDocument):
@@ -31,3 +32,27 @@ class InitiativeAlert(db.DynamicDocument):
     meta = {
         'collection': 'initiatives_alerts'
     }
+
+
+def create_alert(initiative: Initiative):
+    initiative_alert = InitiativeAlert(
+            id=initiative['id'],
+            title=initiative['title'],
+            reference=initiative['reference'],
+            initiative_type=initiative['initiative_type'],
+            initiative_type_alt=initiative['initiative_type_alt'],
+            author_deputies=initiative['author_deputies'],
+            author_parliamentarygroups=initiative['author_parliamentarygroups'],
+            author_others=initiative['author_others'],
+            place=initiative['place'],
+            created=initiative['created'],
+            updated=initiative['updated'],
+            history=initiative['history'],
+            status=initiative['status'],
+            topics=initiative['topics'],
+            tags=initiative['tags'],
+            tagged=initiative['tagged'],
+            url=initiative['url'],
+            extra=initiative['extra'],
+            )
+    initiative_alert.save()
