@@ -12,6 +12,10 @@ class DeputiesField(ma.fields.Field):
     def _serialize(self, value, attr, obj):
         return value
 
+class ContentField(ma.fields.Field):
+    def _serialize(self, value, attr, ob):
+        return '\n'.join(value)
+
 
 class InitiativeSchema(ma.ModelSchema):
     class Meta:
@@ -36,6 +40,24 @@ class InitiativeSchema(ma.ModelSchema):
 
     def _tags_serializer(self, obj):
         return [t.tag for t in obj.tags]
+
+
+class InitiativeContentSchema(ma.ModelSchema):
+    class Meta:
+        model = Initiative
+        model_skip_values = [None]
+        model_fields_kwargs = {
+                'author_deputies': {'load_only': True},
+                'author_parliamentarygroups': {'load_only': True},
+                'author_others': {'load_only': True},
+                'tagged': {'load_only': True},
+                'extra': {'load_only': True},
+                'topics': {'load_only': True},
+                'history': {'load_only': True},
+                'tags': {'load_only': True},
+                }
+
+    content = ContentField(attribute='content')
 
 
 class InitiativeExtendedSchema(ma.ModelSchema):
