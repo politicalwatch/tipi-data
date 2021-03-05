@@ -6,7 +6,8 @@ class InitiativeType(db.Document):
     name = db.StringField()
     group = db.StringField()
     meta = {
-        'collection': 'initiative_types'
+        'collection': 'initiative_types',
+        'ordering': ['+name']
     }
 
     def __str__(self):
