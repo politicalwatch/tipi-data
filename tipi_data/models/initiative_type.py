@@ -2,7 +2,7 @@ from tipi_data import db
 
 
 class InitiativeType(db.Document):
-    code = db.StringField(db_field='_id', primary_key=True)
+    id = db.StringField(db_field='_id', primary_key=True)
     name = db.StringField()
     group = db.StringField()
     meta = {
