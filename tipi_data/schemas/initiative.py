@@ -28,21 +28,19 @@ class InitiativeSchema(ma.ModelSchema):
                 'history': {'load_only': True},
                 'tagged': {'load_only': True},
                 'extra': {'load_only': True},
+                'content': {'load_only': True},
+                'url': {'load_only': True},
+                'subtopics': {'load_only': True},
+                'tags': {'load_only': True},
+                'initiative_type': {'load_only': True},
+                'initiative_type_alt': {'load_only': True},
                 }
 
     authors = AuthorsField(attribute='author_parliamentarygroups')
     deputies = DeputiesField(attribute='author_deputies')
-    subtopics = ma.fields.Method(serialize="_subtopics_serializer")
-    tags = ma.fields.Method(serialize="_tags_serializer")
-
-    def _subtopics_serializer(self, obj):
-        return list(set([t.subtopic for t in obj.tags]))
-
-    def _tags_serializer(self, obj):
-        return [t.tag for t in obj.tags]
 
 
-class InitiativeContentSchema(ma.ModelSchema):
+class InitiativeNoContentSchema(ma.ModelSchema):
     class Meta:
         model = Initiative
         model_skip_values = [None]
@@ -51,14 +49,26 @@ class InitiativeContentSchema(ma.ModelSchema):
                 'author_parliamentarygroups': {'load_only': True},
                 'author_others': {'load_only': True},
                 'tagged': {'load_only': True},
-                'extra': {'load_only': True},
-                'topics': {'load_only': True},
-                'history': {'load_only': True},
-                'tags': {'load_only': True},
+                'content': {'load_only': True},
                 }
 
-    content = ContentField(attribute='content')
+    authors = AuthorsField(attribute='author_parliamentarygroups')
+    deputies = DeputiesField(attribute='author_deputies')
+    related = ma.fields.Method(serialize="_related_serializer")
 
+    def _related_serializer(self, obj):
+        related = InitiativeSchema(many=True).dump(Initiative.all(reference=obj['reference']))
+        if related.errors:
+            return []
+        related = [r for r in related.data if r['id'] != obj['id']]
+        self._process_soft_related(related)
+        return related
+
+    # Soft related means that it is related but does not have any topics
+    def _process_soft_related(self, related):
+        for r in related:
+            if len(r['topics']) == 0:
+                del r['id']
 
 class InitiativeExtendedSchema(ma.ModelSchema):
     class Meta:
@@ -74,6 +84,7 @@ class InitiativeExtendedSchema(ma.ModelSchema):
     authors = AuthorsField(attribute='author_parliamentarygroups')
     deputies = DeputiesField(attribute='author_deputies')
     related = ma.fields.Method(serialize="_related_serializer")
+    content = ContentField(attribute='content')
 
     def _related_serializer(self, obj):
         related = InitiativeSchema(many=True).dump(Initiative.all(reference=obj['reference']))
