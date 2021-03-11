@@ -40,6 +40,36 @@ class InitiativeSchema(ma.ModelSchema):
     deputies = DeputiesField(attribute='author_deputies')
 
 
+class InitiativeNoContentSchema(ma.ModelSchema):
+    class Meta:
+        model = Initiative
+        model_skip_values = [None]
+        model_fields_kwargs = {
+                'author_deputies': {'load_only': True},
+                'author_parliamentarygroups': {'load_only': True},
+                'author_others': {'load_only': True},
+                'tagged': {'load_only': True},
+                'content': {'load_only': True},
+                }
+
+    authors = AuthorsField(attribute='author_parliamentarygroups')
+    deputies = DeputiesField(attribute='author_deputies')
+    related = ma.fields.Method(serialize="_related_serializer")
+
+    def _related_serializer(self, obj):
+        related = InitiativeSchema(many=True).dump(Initiative.all(reference=obj['reference']))
+        if related.errors:
+            return []
+        related = [r for r in related.data if r['id'] != obj['id']]
+        self._process_soft_related(related)
+        return related
+
+    # Soft related means that it is related but does not have any topics
+    def _process_soft_related(self, related):
+        for r in related:
+            if len(r['topics']) == 0:
+                del r['id']
+
 class InitiativeExtendedSchema(ma.ModelSchema):
     class Meta:
         model = Initiative
