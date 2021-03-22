@@ -33,6 +33,14 @@ class InitiativeSchema(ma.ModelSchema):
 
     authors = AuthorsField(attribute='author_parliamentarygroups')
     deputies = DeputiesField(attribute='author_deputies')
+    subtopics = ma.fields.Method(serialize="_subtopics_serializer")
+    tags = ma.fields.Method(serialize="_tags_serializer")
+
+    def _subtopics_serializer(self, obj):
+        return list(set([t.subtopic for t in obj.tags]))
+
+    def _tags_serializer(self, obj):
+        return [t.tag for t in obj.tags]
 
 
 class InitiativeNoContentSchema(ma.ModelSchema):
