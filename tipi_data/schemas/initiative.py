@@ -29,11 +29,6 @@ class InitiativeSchema(ma.ModelSchema):
                 'tagged': {'load_only': True},
                 'extra': {'load_only': True},
                 'content': {'load_only': True},
-                'url': {'load_only': True},
-                'subtopics': {'load_only': True},
-                'tags': {'load_only': True},
-                'initiative_type': {'load_only': True},
-                'initiative_type_alt': {'load_only': True},
                 }
 
     authors = AuthorsField(attribute='author_parliamentarygroups')
