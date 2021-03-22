@@ -28,7 +28,6 @@ class SearchesTracker(db.DynamicDocument):
                     fields = [key for key in params.keys() if is_valid(key, params[key])],
                     values = {key: value for key, value in params.items() if is_valid(key, value)},
                     metadata = {
-                        'ip': extract_value_from_metadata('HTTP_X_REAL_IP'),
                         'user_agent': extract_value_from_metadata('HTTP_USER_AGENT')
                         }
                     )
