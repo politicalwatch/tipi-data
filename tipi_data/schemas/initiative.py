@@ -35,12 +35,16 @@ class InitiativeSchema(ma.ModelSchema):
     deputies = DeputiesField(attribute='author_deputies')
     subtopics = ma.fields.Method(serialize="_subtopics_serializer")
     tags = ma.fields.Method(serialize="_tags_serializer")
+    place = ma.fields.Method(serialize="_place_serializer")
 
     def _subtopics_serializer(self, obj):
         return list(set([t.subtopic for t in obj.tags]))
 
     def _tags_serializer(self, obj):
         return [t.tag for t in obj.tags]
+
+    def _place_serializer(self, obj):
+        return obj.place if 'place' in obj else ''
 
 
 class InitiativeNoContentSchema(ma.ModelSchema):
