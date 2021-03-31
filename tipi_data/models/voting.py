@@ -13,6 +13,6 @@ class Voting(db.Document):
     total_present = db.IntField()
 
     by_party = db.DictField()
-    by_deputy = db.DictField()
+    by_deputy = db.ListField()
 
     meta = {'collection': 'votes'}
