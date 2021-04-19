@@ -5,6 +5,8 @@ class Voting(db.Document):
     id = db.StringField(db_field='_id', primary_key=True)
     reference = db.StringField()
     title = db.StringField()
+    subgroup_text = db.StringField()
+    subgroup_titlte = db.StringField()
 
     total_yes = db.IntField()
     total_no = db.IntField()
