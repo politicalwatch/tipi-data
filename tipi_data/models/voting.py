@@ -6,7 +6,7 @@ class Voting(db.Document):
     reference = db.StringField()
     title = db.StringField()
     subgroup_text = db.StringField()
-    subgroup_titlte = db.StringField()
+    subgroup_title = db.StringField()
 
     total_yes = db.IntField()
     total_no = db.IntField()
