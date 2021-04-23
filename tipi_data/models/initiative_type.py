@@ -11,4 +11,4 @@ class InitiativeType(db.Document):
     }
 
     def __str__(self):
-        return "{} : {}/{}".format(self.group, self.code, self.type)
+        return "{} : {}/{}".format(self.group, self.id, self.type)
