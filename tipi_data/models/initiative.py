@@ -37,7 +37,10 @@ class Initiative(db.Document):
     meta = {
             'collection': 'initiatives',
             'ordering': ['-updated'],
-            'indexes': ['updated']
+            'indexes': [
+                'reference',
+                'updated',
+                ]
             }
     # TODO Add indexes https://mongoengine-odm.readthedocs.io/guide/defining-documents.html#indexes
 
