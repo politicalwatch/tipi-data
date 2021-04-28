@@ -15,6 +15,7 @@ class DeputySchema(ma.ModelSchema):
                 'constituency': {'load_only': True},
                 'public_position': {'load_only': True},
                 'birthdate': {'load_only': True},
+                'gender': {'load_only': True},
                 'legislatures': {'load_only': True},
                 'party_logo': {'load_only': True},
                 'bio': {'load_only': True},
