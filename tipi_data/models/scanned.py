@@ -16,4 +16,4 @@ class Scanned(db.Document):
     verified = db.BooleanField()
 
     meta = {'collection': 'scanned'}
-    # TODO Add indexes https://mongoengine-odm.readthedocs.io/guide/defining-documents.html#indexes
+    # TODO Add indexes https://docs.mongoengine.org/guide/defining-documents.html#indexes

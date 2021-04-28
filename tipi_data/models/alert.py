@@ -21,7 +21,7 @@ class Alert(db.Document):
     searches = db.EmbeddedDocumentListField(Search)
 
     meta = {'collection': 'alerts'}
-    # TODO Add indexes https://mongoengine-odm.readthedocs.io/guide/defining-documents.html#indexes
+    # TODO Add indexes https://docs.mongoengine.org/guide/defining-documents.html#indexes
 
     def __str__(self):
         return self.email
