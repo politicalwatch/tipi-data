@@ -17,6 +17,7 @@ class Deputy(db.Document):
     bio = db.ListField(db.StringField(), default=list)
     legislatures = db.ListField(db.StringField(), default=list)
     party_logo = db.StringField()
+    party_name = db.StringField()
     start_date = db.DateTimeField()
     end_date = db.DateTimeField()
     url = db.URLField()
