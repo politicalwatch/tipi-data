@@ -47,24 +47,38 @@ class Topic(db.Document):
 
 
     @staticmethod
+    def compile_tag(topic, tag):
+        delimiter = '.*?' if '.*?' in tag['regex'] else '.*'
+        if tag['shuffle']:
+            for permutation in itertools.permutations(tag['regex'].split(delimiter)):
+                return {
+                    'topic': topic['name'],
+                    'subtopic': tag['subtopic'],
+                    'tag': tag['tag'],
+                    'compiletag': pcre.compile('(?i)' + delimiter.join(permutation))
+                }
+        return {
+            'topic': topic['name'],
+            'subtopic': tag['subtopic'],
+            'tag': tag['tag'],
+            'compiletag': pcre.compile('(?i)' + tag['regex'])
+        }
+
+    @staticmethod
     def get_tags():
         tags = []
         for topic in Topic.objects():
             for tag in topic['tags']:
-                delimiter = '.*?' if '.*?' in tag['regex'] else '.*'
-                if tag['shuffle']:
-                    for permutation in itertools.permutations(tag['regex'].split(delimiter)):
-                        tags.append({
-                            'topic': topic['name'],
-                            'subtopic': tag['subtopic'],
-                            'tag': tag['tag'],
-                            'compiletag': pcre.compile('(?i)' + delimiter.join(permutation))
-                        })
-                else:
-                    tags.append({
-                        'topic': topic['name'],
-                        'subtopic': tag['subtopic'],
-                        'tag': tag['tag'],
-                        'compiletag': pcre.compile('(?i)' + tag['regex'])
-                    })
+                tags.append(Topic.compile_tag(topic, tag))
+        return tags
+
+    @staticmethod
+    def get_filtered_tags(filter, search):
+        tags = []
+        for topic in Topic.objects():
+            for tag in topic['tags']:
+                if tag[filter] != search:
+                    continue
+
+                tags.append(Topic.compile_tag(topic, tag))
         return tags
