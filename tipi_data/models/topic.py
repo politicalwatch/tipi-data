@@ -82,3 +82,14 @@ class Topic(db.Document):
 
                 tags.append(Topic.compile_tag(topic, tag))
         return tags
+
+    @staticmethod
+    def get_filtered_tags_by_topic(search):
+        tags = []
+        for topic in Topic.objects():
+            if topic['name'] != search:
+                continue
+
+            for tag in topic['tags']:
+                tags.append(Topic.compile_tag(topic, tag))
+        return tags
