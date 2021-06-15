@@ -33,6 +33,7 @@ class Topic(db.Document):
     shortname = db.StringField()
     description = db.ListField(db.StringField())
     tags = db.EmbeddedDocumentListField(Tag)
+    knowledgebase = db.StringField()
 
     meta = {
             'collection': 'topics',
