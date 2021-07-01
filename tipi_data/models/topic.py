@@ -46,7 +46,6 @@ class Topic(db.Document):
     def __str__(self):
         return self.name
 
-
     @staticmethod
     def compile_tag(topic, tag):
         delimiter = '.*?' if '.*?' in tag['regex'] else '.*'
@@ -91,6 +90,15 @@ class Topic(db.Document):
             if topic['name'] != search:
                 continue
 
+            for tag in topic['tags']:
+                tags.append(Topic.compile_tag(topic, tag))
+        return tags
+
+    @staticmethod
+    def get_tags_by_kb(kb):
+        tags = []
+        topics = Topic.objects(knowledgebase=kb)
+        for topic in topics:
             for tag in topic['tags']:
                 tags.append(Topic.compile_tag(topic, tag))
         return tags
