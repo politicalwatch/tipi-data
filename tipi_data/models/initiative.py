@@ -1,5 +1,3 @@
-from mongoengine.queryset import queryset_manager
-
 from tipi_data import db
 
 
@@ -11,6 +9,12 @@ class Tag(db.EmbeddedDocument):
 
     def __str__(self):
         return self.tag
+
+
+class Tagged(db.EmbeddedDocument):
+    knowledgebase = db.StringField()
+    topics = db.ListField(db.StringField(), default=list)
+    tags = db.EmbeddedDocumentListField(Tag, default=list)
 
 
 class Initiative(db.Document):
@@ -27,9 +31,7 @@ class Initiative(db.Document):
     updated = db.DateTimeField()
     history = db.ListField(db.StringField())
     status = db.StringField()
-    topics = db.ListField(db.StringField(), default=list)
-    tags = db.EmbeddedDocumentListField(Tag, default=list)
-    tagged = db.BooleanField()
+    tagged = db.EmbeddedDocumentListField(Tagged, default=list)
     url = db.URLField()
     content = db.ListField(db.StringField(), default=list)
     extra = db.DictField()
@@ -46,11 +48,3 @@ class Initiative(db.Document):
 
     def __str__(self):
         return "{} : {}".format(self.id, self.title)
-
-    @queryset_manager
-    def objects(doc_cls, queryset):
-        return queryset.filter(topics__exists=True, topics__not__size=0)
-
-    @queryset_manager
-    def all(doc_cls, queryset):
-        return queryset

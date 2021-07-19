@@ -49,8 +49,6 @@ def create_alert(initiative: Initiative):
             updated=initiative['updated'],
             history=initiative['history'],
             status=initiative['status'],
-            topics=initiative['topics'],
-            tags=initiative['tags'],
             tagged=initiative['tagged'],
             url=initiative['url'],
             extra=initiative['extra'],
