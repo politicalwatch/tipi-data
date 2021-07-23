@@ -1,7 +1,5 @@
 from mongoengine.queryset import QuerySet
 from natsort import natsorted, ns
-import itertools
-import pcre
 
 from tipi_data import db
 
@@ -45,60 +43,3 @@ class Topic(db.Document):
 
     def __str__(self):
         return self.name
-
-    @staticmethod
-    def compile_tag(topic, tag):
-        delimiter = '.*?' if '.*?' in tag['regex'] else '.*'
-        if tag['shuffle']:
-            for permutation in itertools.permutations(tag['regex'].split(delimiter)):
-                return {
-                    'topic': topic['name'],
-                    'subtopic': tag['subtopic'],
-                    'tag': tag['tag'],
-                    'compiletag': pcre.compile('(?i)' + delimiter.join(permutation))
-                }
-        return {
-            'topic': topic['name'],
-            'subtopic': tag['subtopic'],
-            'tag': tag['tag'],
-            'compiletag': pcre.compile('(?i)' + tag['regex'])
-        }
-
-    @staticmethod
-    def get_tags():
-        tags = []
-        for topic in Topic.objects():
-            for tag in topic['tags']:
-                tags.append(Topic.compile_tag(topic, tag))
-        return tags
-
-    @staticmethod
-    def get_filtered_tags(filter, search):
-        tags = []
-        for topic in Topic.objects():
-            for tag in topic['tags']:
-                if tag[filter] != search:
-                    continue
-
-                tags.append(Topic.compile_tag(topic, tag))
-        return tags
-
-    @staticmethod
-    def get_filtered_tags_by_topic(search):
-        tags = []
-        for topic in Topic.objects():
-            if topic['name'] != search:
-                continue
-
-            for tag in topic['tags']:
-                tags.append(Topic.compile_tag(topic, tag))
-        return tags
-
-    @staticmethod
-    def get_tags_by_kb(kb):
-        tags = []
-        topics = Topic.objects(knowledgebase=kb)
-        for topic in topics:
-            for tag in topic['tags']:
-                tags.append(Topic.compile_tag(topic, tag))
-        return tags
