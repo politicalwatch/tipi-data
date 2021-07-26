@@ -32,3 +32,7 @@ class Initiatives():
     @staticmethod
     def by_query(query):
         return Initiative.objects(__raw__=query)
+
+    @staticmethod
+    def by_reference(reference):
+        return Initiative.objects(reference=reference)
