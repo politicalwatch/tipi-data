@@ -1,4 +1,4 @@
-from tipi_data.models.initiative import Initiative, Tagged, Tag
+from tipi_data.models.initiative import Initiative
 
 
 class Initiatives():
@@ -11,7 +11,7 @@ class Initiatives():
         return Initiative.objects(
                 tagged__match={
                     'knowledgebase': kb,
-                    'topics': {'$not': {'$size': 0}}
+                    'topics': {'$size': {'$not': 0}}
                     }
                 )
 
