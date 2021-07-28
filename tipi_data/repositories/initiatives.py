@@ -8,10 +8,11 @@ class Initiatives():
 
     @staticmethod
     def by_kb(kb):
-        return Initiative.objects(__raw__={
+        query = {
             'tagged.knowledgebase': kb,
             'tagged.topics': {'$not': {'$size': 0}}
-        })
+        }
+        return Initiatives.by_query(query)
 
     @staticmethod
     def by_tag(tag):
