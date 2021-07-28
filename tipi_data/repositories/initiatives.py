@@ -8,12 +8,10 @@ class Initiatives():
 
     @staticmethod
     def by_kb(kb):
-        return Initiative.objects(
-                tagged__match={
-                    'knowledgebase': kb,
-                    'topics': {'$size': {'$not': 0}}
-                    }
-                )
+        return Initiative.objects(__raw__={
+            'tagged.knowledgebase': kb,
+            'tagged.topics': {'$not': {'$size': 0}}
+        })
 
     @staticmethod
     def by_tag(tag):
