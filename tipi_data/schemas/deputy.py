@@ -64,9 +64,10 @@ class PublicPositionsField(ma.fields.Field):
 class ExtraField(ma.fields.Field):
     def _serialize(self, extra, attr, obj):
         new_declarations = {}
-        for (declaration, link) in extra['declarations'].items():
-            new_declaration = transform_dates(declaration)
-            new_declarations[new_declaration] = link
+        if 'declarations' in extra.keys():
+            for (declaration, link) in extra['declarations'].items():
+                new_declaration = transform_dates(declaration)
+                new_declarations[new_declaration] = link
 
         extra['declarations'] = new_declarations
         return extra
