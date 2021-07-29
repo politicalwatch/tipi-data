@@ -26,22 +26,13 @@ class InitiativeSchema(ma.ModelSchema):
                 'author_parliamentarygroups': {'load_only': True},
                 'author_others': {'load_only': True},
                 'history': {'load_only': True},
-                'tagged': {'load_only': True},
                 'extra': {'load_only': True},
                 'content': {'load_only': True},
                 }
 
     authors = AuthorsField(attribute='author_parliamentarygroups')
     deputies = DeputiesField(attribute='author_deputies')
-    subtopics = ma.fields.Method(serialize="_subtopics_serializer")
-    tags = ma.fields.Method(serialize="_tags_serializer")
     place = ma.fields.Method(serialize="_place_serializer")
-
-    def _subtopics_serializer(self, obj):
-        return list(set([t.subtopic for t in obj.tags]))
-
-    def _tags_serializer(self, obj):
-        return [t.tag for t in obj.tags]
 
     def _place_serializer(self, obj):
         return obj.place if 'place' in obj else ''
