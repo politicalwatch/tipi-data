@@ -13,6 +13,7 @@ def compile_tag(topic, tag):
                 'subtopic': tag['subtopic'],
                 'tag': tag['tag'],
                 'knowledgebase': topic['knowledgebase'],
+                'public': topic['public'],
                 'compiletag': pcre.compile('(?i)' + delimiter.join(permutation))
             })
         return tags
@@ -22,6 +23,7 @@ def compile_tag(topic, tag):
         'subtopic': tag['subtopic'],
         'tag': tag['tag'],
         'knowledgebase': topic['knowledgebase'],
+        'public': topic['public'],
         'compiletag': pcre.compile('(?i)' + tag['regex'])
     }]
 

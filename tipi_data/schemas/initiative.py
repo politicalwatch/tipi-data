@@ -33,9 +33,27 @@ class InitiativeSchema(ma.ModelSchema):
     authors = AuthorsField(attribute='author_parliamentarygroups')
     deputies = DeputiesField(attribute='author_deputies')
     place = ma.fields.Method(serialize="_place_serializer")
+    tagged = ma.fields.Method(serialize="_tagged_serializer")
+
+
+    def __init__(self, *args, **kwargs):
+        if 'kb' in kwargs:
+            self.kb = kwargs['kb']
+            del kwargs['kb']
+        else:
+            self.kb = False
+
+        super().__init__(*args, **kwargs)
 
     def _place_serializer(self, obj):
         return obj.place if 'place' in obj else ''
+
+    def _tagged_serializer(self, obj):
+        if self.kb:
+            tagged = list(filter(lambda tagged: tagged.knowledgebase in self.kb, obj.tagged))
+        else:
+            tagged = list(filter(lambda tagged: tagged.public, obj.tagged))
+        return list(map(lambda tag_set: tag_set.serialize(), tagged))
 
 
 class InitiativeNoContentSchema(ma.ModelSchema):
