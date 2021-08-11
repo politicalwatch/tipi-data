@@ -72,6 +72,11 @@ class InitiativeNoContentSchema(ma.ModelSchema):
     deputies = DeputiesField(attribute='author_deputies')
     related = ma.fields.Method(serialize="_related_serializer")
 
+    def __init__(self, *args, **kwargs):
+        if 'kb' in kwargs:
+            del kwargs['kb']
+        super().__init__(*args, **kwargs)
+
     def _related_serializer(self, obj):
         related = InitiativeSchema(many=True).dump(Initiative.all(reference=obj['reference']))
         if related.errors:
@@ -101,6 +106,11 @@ class InitiativeExtendedSchema(ma.ModelSchema):
     deputies = DeputiesField(attribute='author_deputies')
     related = ma.fields.Method(serialize="_related_serializer")
     content = ContentField(attribute='content')
+
+    def __init__(self, *args, **kwargs):
+        if 'kb' in kwargs:
+            del kwargs['kb']
+        super().__init__(*args, **kwargs)
 
     def _related_serializer(self, obj):
         related = InitiativeSchema(many=True).dump(Initiative.all(reference=obj['reference']))

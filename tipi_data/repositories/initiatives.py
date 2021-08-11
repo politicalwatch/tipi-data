@@ -3,6 +3,10 @@ from tipi_data.models.initiative import Initiative
 
 class Initiatives():
     @staticmethod
+    def get(id):
+        return Initiative.objects().get(id=id)
+
+    @staticmethod
     def get_all():
         return Initiative.objects()
 

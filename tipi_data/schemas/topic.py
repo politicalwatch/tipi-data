@@ -14,7 +14,8 @@ class TopicSchema(ma.ModelSchema):
         model_skip_values = [None]
         model_fields_kwargs = {
                 'description': {'load_only': True},
-                'tags': {'load_only': True}
+                'tags': {'load_only': True},
+                'public': {'load_only': True}
                 }
 
 
@@ -22,5 +23,8 @@ class TopicExtendedSchema(ma.ModelSchema):
     class Meta:
         model = Topic
         model_skip_values = [None]
+        model_fields_kwargs = {
+            'public': {'load_only': True}
+        }
 
     tags = TagsField(attribute="tags")
