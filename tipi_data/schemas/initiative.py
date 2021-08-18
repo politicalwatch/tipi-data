@@ -35,7 +35,6 @@ class InitiativeSchema(ma.ModelSchema):
     place = ma.fields.Method(serialize="_place_serializer")
     tagged = ma.fields.Method(serialize="_tagged_serializer")
 
-
     def __init__(self, *args, **kwargs):
         if 'kb' in kwargs:
             self.kb = kwargs['kb']
@@ -64,16 +63,17 @@ class InitiativeNoContentSchema(ma.ModelSchema):
                 'author_deputies': {'load_only': True},
                 'author_parliamentarygroups': {'load_only': True},
                 'author_others': {'load_only': True},
-                'tagged': {'load_only': True},
                 'content': {'load_only': True},
                 }
 
     authors = AuthorsField(attribute='author_parliamentarygroups')
     deputies = DeputiesField(attribute='author_deputies')
     related = ma.fields.Method(serialize="_related_serializer")
+    tagged = ma.fields.Method(serialize="_tagged_serializer")
 
     def __init__(self, *args, **kwargs):
         if 'kb' in kwargs:
+            self.kb = kwargs['kb']
             del kwargs['kb']
         super().__init__(*args, **kwargs)
 
@@ -90,6 +90,13 @@ class InitiativeNoContentSchema(ma.ModelSchema):
         for r in related:
             if len(r['topics']) == 0:
                 del r['id']
+
+    def _tagged_serializer(self, obj):
+        if self.kb:
+            tagged = list(filter(lambda tagged: tagged.knowledgebase in self.kb, obj.tagged))
+        else:
+            tagged = list(filter(lambda tagged: tagged.public, obj.tagged))
+        return list(map(lambda tag_set: tag_set.serialize(), tagged))
 
 class InitiativeExtendedSchema(ma.ModelSchema):
     class Meta:
@@ -99,16 +106,17 @@ class InitiativeExtendedSchema(ma.ModelSchema):
                 'author_deputies': {'load_only': True},
                 'author_parliamentarygroups': {'load_only': True},
                 'author_others': {'load_only': True},
-                'tagged': {'load_only': True},
                 }
 
     authors = AuthorsField(attribute='author_parliamentarygroups')
     deputies = DeputiesField(attribute='author_deputies')
     related = ma.fields.Method(serialize="_related_serializer")
     content = ContentField(attribute='content')
+    tagged = ma.fields.Method(serialize="_tagged_serializer")
 
     def __init__(self, *args, **kwargs):
         if 'kb' in kwargs:
+            self.kb = kwargs['kb']
             del kwargs['kb']
         super().__init__(*args, **kwargs)
 
@@ -125,3 +133,10 @@ class InitiativeExtendedSchema(ma.ModelSchema):
         for r in related:
             if len(r['topics']) == 0:
                 del r['id']
+
+    def _tagged_serializer(self, obj):
+        if self.kb:
+            tagged = list(filter(lambda tagged: tagged.knowledgebase in self.kb, obj.tagged))
+        else:
+            tagged = list(filter(lambda tagged: tagged.public, obj.tagged))
+        return list(map(lambda tag_set: tag_set.serialize(), tagged))
