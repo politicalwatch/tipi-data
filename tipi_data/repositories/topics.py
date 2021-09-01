@@ -4,11 +4,11 @@ from tipi_data.models.topic import Topic
 class Topics():
     @staticmethod
     def get_all():
-        return Topic.objects()
+        return Topic.objects().natsorted()
 
     @staticmethod
     def get_public():
-        return Topic.objects(public=True)
+        return Topic.objects(public=True).natsorted()
 
     @staticmethod
     def get(id):
@@ -21,7 +21,7 @@ class Topics():
                 '$in': kb
             }
         }
-        return Topic.objects(__raw__=query)
+        return Topic.objects(__raw__=query).natsorted()
 
     @staticmethod
     def get_kbs():

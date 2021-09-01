@@ -4,7 +4,6 @@ from natsort import natsorted, ns
 from tipi_data import db
 
 
-
 class TopicQuerySet(QuerySet):
 
     def natsorted(self):
@@ -12,7 +11,6 @@ class TopicQuerySet(QuerySet):
                 self,
                 key=lambda x: x.name,
                 alg=ns.IGNORECASE)
-
 
 
 class Tag(db.EmbeddedDocument):
