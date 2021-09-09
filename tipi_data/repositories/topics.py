@@ -20,11 +20,16 @@ class Topics():
 
     @staticmethod
     def by_kb(kb):
-        return Topic.objects(knowledgebase=kb)
+        query = {
+            'knowledgebase': {
+                '$in': kb
+            }
+        }
+        return Topic.objects(__raw__=query)
 
     @staticmethod
     def by_kb_sorted(kb):
-        Topics.by_kb(kb).natsorted()
+        return Topics.by_kb(kb).natsorted()
 
     @staticmethod
     def get_subtopics():
