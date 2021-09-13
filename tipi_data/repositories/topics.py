@@ -20,6 +20,9 @@ class Topics():
 
     @staticmethod
     def by_kb(kb):
+        if not isinstance(kb, list):
+            kb = [kb]
+
         query = {
             'knowledgebase': {
                 '$in': kb
