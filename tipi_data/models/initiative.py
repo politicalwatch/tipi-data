@@ -51,7 +51,7 @@ class Tagged(db.EmbeddedDocument):
         self.topics = sorted(list(set([tag['topic'] for tag in self.tags])))
 
     def has_topics(self):
-        return len(topics) > 0
+        return len(self.topics) > 0
 
     def serialize(self):
         return {
@@ -59,7 +59,6 @@ class Tagged(db.EmbeddedDocument):
             'topics': self.topics,
             'tags': list(map(lambda tag_set: tag_set.serialize(), self.tags))
         }
-
 
 
 class Initiative(db.Document):
