@@ -41,7 +41,3 @@ class Topics():
     @staticmethod
     def get_subtopics_by_kb(kb):
         return Topics.by_kb(kb).distinct('tags.subtopic')
-
-    @staticmethod
-    def get_kbs():
-        return Topic.objects().distinct('knowledgebase')
