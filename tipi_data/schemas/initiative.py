@@ -48,10 +48,7 @@ class InitiativeSchema(ma.ModelSchema):
         return obj.place if 'place' in obj else ''
 
     def _tagged_serializer(self, obj):
-        if self.kb:
-            tagged = list(filter(lambda tagged: tagged.knowledgebase in self.kb, obj.tagged))
-        else:
-            tagged = list(filter(lambda tagged: tagged.public, obj.tagged))
+        tagged = list(filter(lambda tagged: tagged.knowledgebase in self.kb, obj.tagged))
         return list(map(lambda tag_set: tag_set.serialize(), tagged))
 
 
@@ -92,10 +89,7 @@ class InitiativeNoContentSchema(ma.ModelSchema):
                 del r['id']
 
     def _tagged_serializer(self, obj):
-        if self.kb:
-            tagged = list(filter(lambda tagged: tagged.knowledgebase in self.kb, obj.tagged))
-        else:
-            tagged = list(filter(lambda tagged: tagged.public, obj.tagged))
+        tagged = list(filter(lambda tagged: tagged.knowledgebase in self.kb, obj.tagged))
         return list(map(lambda tag_set: tag_set.serialize(), tagged))
 
 class InitiativeExtendedSchema(ma.ModelSchema):
@@ -135,8 +129,5 @@ class InitiativeExtendedSchema(ma.ModelSchema):
                 del r['id']
 
     def _tagged_serializer(self, obj):
-        if self.kb:
-            tagged = list(filter(lambda tagged: tagged.knowledgebase in self.kb, obj.tagged))
-        else:
-            tagged = list(filter(lambda tagged: tagged.public, obj.tagged))
+        tagged = list(filter(lambda tagged: tagged.knowledgebase in self.kb, obj.tagged))
         return list(map(lambda tag_set: tag_set.serialize(), tagged))
