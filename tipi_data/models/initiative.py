@@ -21,7 +21,6 @@ class Tag(db.EmbeddedDocument):
 
 class Tagged(db.EmbeddedDocument):
     knowledgebase = db.StringField()
-    public = db.BooleanField()
     topics = db.ListField(db.StringField(), default=list)
     tags = db.EmbeddedDocumentListField(Tag, default=list)
 
@@ -96,13 +95,13 @@ class Initiative(db.Document):
     def untag(self):
         self.tagged = []
 
-    def add_tag(self, kb, is_public, topic, subtopic, tag_name, times):
+    def add_tag(self, kb, topic, subtopic, tag_name, times):
         tagged = list(filter(lambda tagged: tagged.knowledgebase == kb, self.tagged))
 
         if len(tagged) > 0:
             tagged = tagged[0]
         else:
-            tagged = Tagged(knowledgebase=kb, public=is_public, topics=[], tags=[])
+            tagged = Tagged(knowledgebase=kb, topics=[], tags=[])
             self.tagged.append(tagged)
 
         tagged.add_tag(topic, subtopic, tag_name, times)
