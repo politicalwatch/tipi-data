@@ -1,6 +1,5 @@
 import hashlib
 from slugify import slugify
-from uuid import uuid4
 
 
 def generate_id(*args):
@@ -12,6 +11,4 @@ def generate_id(*args):
         return 'ID_ERROR'
 
 def generate_slug(*args):
-    return "{}-{}".format(
-            slugify( u''.join(args).encode('utf-8')),
-            str(uuid4()).split('-')[0])
+    return slugify( u''.join(args).encode('utf-8'))
