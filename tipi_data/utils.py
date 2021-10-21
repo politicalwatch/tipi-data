@@ -11,4 +11,4 @@ def generate_id(*args):
         return 'ID_ERROR'
 
 def generate_slug(*args):
-    return slugify( u''.join(args).encode('utf-8'))
+    return slugify(u''.join(args).encode('utf-8'))
