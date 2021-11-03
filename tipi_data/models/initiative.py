@@ -83,11 +83,14 @@ class Initiative(db.Document):
             'collection': 'initiatives',
             'ordering': ['-updated'],
             'indexes': [
+                {
+                    'fields': ['$title', '$content'],
+                    'default_language': 'spanish'
+                    },
                 'reference',
                 'updated',
                 ]
             }
-    # TODO Add indexes https://docs.mongoengine.org/guide/defining-documents.html#indexes
 
     def __str__(self):
         return "{} : {}".format(self.id, self.title)
