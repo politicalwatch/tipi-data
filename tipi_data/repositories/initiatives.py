@@ -19,6 +19,13 @@ class Initiatives():
         return Initiatives.by_query(query)
 
     @staticmethod
+    def by_kb_untagged(kb):
+        query = {
+            'tagged.knowledgebase': { '$ne': kb},
+        }
+        return Initiatives.by_query(query)
+
+    @staticmethod
     def by_tag(tag):
         return Initiative.objects(tagged__tags__tag=tag)
 

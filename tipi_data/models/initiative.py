@@ -98,6 +98,17 @@ class Initiative(db.Document):
     def untag(self):
         self.tagged = []
 
+    def untag_kb(self, kb):
+        tagged = list(filter(lambda tagged: tagged.knowledgebase != kb, self.tagged))
+        self.tagged = tagged
+
+    def init_tagged_kb(self, kb):
+        tagged = list(filter(lambda tagged: tagged.knowledgebase == kb, self.tagged))
+        if len(tagged) > 0:
+            return
+        tagged = Tagged(knowledgebase=kb, topics=[], tags=[])
+        self.tagged.append(tagged)
+
     def add_tag(self, kb, topic, subtopic, tag_name, times):
         tagged = list(filter(lambda tagged: tagged.knowledgebase == kb, self.tagged))
 
