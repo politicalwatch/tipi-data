@@ -16,6 +16,19 @@ class ContentField(ma.fields.Field):
     def _serialize(self, value, attr, ob):
         return '\n'.join(value)
 
+class TopicsField(ma.fields.Field):
+    def _serialize(self, value, attr, obj):
+        topic_counter = {}
+        for tag in obj.tags:
+            if tag.topic not in topic_counter:
+                topic_counter[tag.topic] = 0
+            topic_counter[tag.topic] += tag.times
+        sorted_topic_counter = sorted(topic_counter.items(), key=lambda x:x[1])
+
+        new_topics = []
+        for topic in sorted_topic_counter:
+            new_topics.insert(0, topic[0])
+        return new_topics
 
 class InitiativeSchema(ma.ModelSchema):
     class Meta:
@@ -33,6 +46,7 @@ class InitiativeSchema(ma.ModelSchema):
 
     authors = AuthorsField(attribute='author_parliamentarygroups')
     deputies = DeputiesField(attribute='author_deputies')
+    topics = TopicsField(attribute='topics')
     subtopics = ma.fields.Method(serialize="_subtopics_serializer")
     tags = ma.fields.Method(serialize="_tags_serializer")
     place = ma.fields.Method(serialize="_place_serializer")
@@ -61,6 +75,7 @@ class InitiativeNoContentSchema(ma.ModelSchema):
 
     authors = AuthorsField(attribute='author_parliamentarygroups')
     deputies = DeputiesField(attribute='author_deputies')
+    topics = TopicsField(attribute='topics')
     related = ma.fields.Method(serialize="_related_serializer")
 
     def _related_serializer(self, obj):
@@ -92,6 +107,7 @@ class InitiativeExtendedSchema(ma.ModelSchema):
     deputies = DeputiesField(attribute='author_deputies')
     related = ma.fields.Method(serialize="_related_serializer")
     content = ContentField(attribute='content')
+    topics = TopicsField(attribute='topics')
 
     def _related_serializer(self, obj):
         related = InitiativeSchema(many=True).dump(Initiative.all(reference=obj['reference']))
