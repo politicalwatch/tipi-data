@@ -11,6 +11,13 @@ class Initiatives():
         return Initiative.objects()
 
     @staticmethod
+    def get_all_without_answers():
+        query = {
+            'initiative_type_alt': {'$ne': 'Respuesta'}
+        }
+        return Initiatives.by_query(query)
+
+    @staticmethod
     def by_kb(kb):
         query = {
             'tagged.knowledgebase': kb,
