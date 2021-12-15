@@ -62,6 +62,8 @@ class PublicPositionsField(ma.fields.Field):
 
 class ExtraField(ma.fields.Field):
     def _serialize(self, extra, attr, obj):
+        if not extra:
+            return extra
         new_declarations = {}
         for (declaration, link) in extra['declarations'].items():
             new_declaration = transform_dates(declaration)
