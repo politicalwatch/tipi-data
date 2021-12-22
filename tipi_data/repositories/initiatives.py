@@ -11,6 +11,32 @@ class Initiatives():
         return Initiative.objects()
 
     @staticmethod
+    def get_all_short_untagged():
+        query = {
+                '$and': [
+                    {'$or': [
+                        {'tagged': []},
+                        {'tagged': {'$exists': False}},
+                    ]},
+                    {'content.100000': {'$exists': False}}
+                ]
+            }
+        return Initiatives.by_query(query)
+
+    @staticmethod
+    def get_all_long_untagged():
+        query = {
+                '$and': [
+                    {'$or': [
+                        {'tagged': []},
+                        {'tagged': {'$exists': False}},
+                    ]},
+                    {'content.100000': {'$exists': True}}
+                ]
+            }
+        return Initiatives.by_query(query)
+
+    @staticmethod
     def get_all_without_answers():
         query = {
             'initiative_type_alt': {'$ne': 'Respuesta'}
@@ -29,6 +55,26 @@ class Initiatives():
     def by_kb_untagged(kb):
         query = {
             'tagged.knowledgebase': { '$ne': kb},
+        }
+        return Initiatives.by_query(query)
+
+    @staticmethod
+    def by_kb_short_untagged(kb):
+        query = {
+            '$and': [
+                {'tagged.knowledgebase': { '$ne': kb}},
+                {'content.100000': {'$exists': False}}
+            ]
+        }
+        return Initiatives.by_query(query)
+
+    @staticmethod
+    def by_kb_long_untagged(kb):
+        query = {
+            '$and': [
+                {'tagged.knowledgebase': { '$ne': kb}},
+                {'content.100000': {'$exists': True}}
+            ]
         }
         return Initiatives.by_query(query)
 
