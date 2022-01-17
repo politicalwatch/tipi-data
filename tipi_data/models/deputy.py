@@ -1,3 +1,7 @@
+import datetime
+
+from mongoengine.queryset import queryset_manager
+
 from tipi_data import db
 
 
@@ -11,6 +15,7 @@ class Deputy(db.Document):
     twitter = db.URLField()
     facebook = db.URLField()
     birthdate = db.DateTimeField()
+    age = db.IntField()
     gender = db.StringField()
     constituency = db.StringField()
     public_position = db.ListField(db.StringField(), default=list)
@@ -29,7 +34,20 @@ class Deputy(db.Document):
             'ordering': ['name'],
             'indexes': ['name']
             }
-    # TODO Add indexes https://docs.mongoengine.org/guide/defining-documents.html#indexes
 
     def __str__(self):
         return self.name
+
+    def calculate_age(self):
+        if not self.birthdate:
+            return
+        today = datetime.datetime.today()
+        years = today.year - self.birthdate.year
+        if today.month < self.birthdate.month or \
+                (today.month == self.birthdate.month and today.day < self.birthdate.day):
+            years -= 1
+        self.age = years
+
+    @queryset_manager
+    def actives(doc_cls, queryset):
+        return queryset.filter(active=True)
