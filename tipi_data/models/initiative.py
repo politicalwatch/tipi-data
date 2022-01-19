@@ -78,6 +78,7 @@ class Initiative(db.Document):
     url = db.URLField()
     content = db.ListField(db.StringField(), default=list)
     extra = db.DictField()
+    oldid = db.StringField()
 
     meta = {
             'collection': 'initiatives',
