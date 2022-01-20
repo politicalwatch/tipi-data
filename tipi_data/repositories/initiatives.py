@@ -6,6 +6,9 @@ class Initiatives():
     def get(id):
         return Initiative.objects().get(id=id)
 
+    def get_old(id):
+        return Initiative.objects().get(oldid=id)
+
     @staticmethod
     def get_all():
         return Initiative.objects()
