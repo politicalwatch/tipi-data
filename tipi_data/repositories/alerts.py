@@ -4,7 +4,7 @@ from tipi_data.models.alert import Alert, InitiativeAlert
 class Alerts():
     @staticmethod
     def get_all():
-        return InitiativeAlert.objects()
+        return Alert.objects()
 
     @staticmethod
     def get_validated():
