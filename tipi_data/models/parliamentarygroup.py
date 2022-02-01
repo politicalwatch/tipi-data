@@ -12,6 +12,11 @@ class Ages(db.EmbeddedDocument):
     between50and65 = db.IntField()
     over65 = db.IntField()
 
+class Party(db.EmbeddedDocument):
+    name = db.StringField()
+    logo = db.StringField()
+    color = db.StringField()
+
 
 class ParliamentaryGroupComposition(db.EmbeddedDocument):
     deputies = db.IntField()
@@ -24,6 +29,8 @@ class ParliamentaryGroup(db.Document):
     name = db.StringField()
     shortname = db.StringField()
     composition = db.EmbeddedDocumentField(ParliamentaryGroupComposition)
+    parties = db.EmbeddedDocumentListField(Party, default=list)
+    color = db.StringField()
 
     meta = {
             'collection': 'parliamentarygroups',
