@@ -12,6 +12,7 @@ class Ages(db.EmbeddedDocument):
     between50and65 = db.IntField()
     over65 = db.IntField()
 
+
 class Party(db.EmbeddedDocument):
     name = db.StringField()
     logo = db.StringField()
@@ -34,7 +35,7 @@ class ParliamentaryGroup(db.Document):
 
     meta = {
             'collection': 'parliamentarygroups',
-            'ordering': ['name'],
+            'ordering': ['-composition__deputies'],
             'indexes': ['name']
             }
 
