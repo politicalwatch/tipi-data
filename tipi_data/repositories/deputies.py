@@ -3,6 +3,10 @@ from tipi_data.models.deputy import Deputy
 
 class Deputies:
     @staticmethod
+    def get_all():
+        return Deputy.objects()
+
+    @staticmethod
     def get_total(group):
         return Deputy.actives(
                 parliamentarygroup=group
