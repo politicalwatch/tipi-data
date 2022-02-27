@@ -20,7 +20,7 @@ class Tag(db.EmbeddedDocument):
     shuffle = db.BooleanField()
 
     def __str__(self):
-        return tag
+        return self.tag
 
 
 class Topic(db.Document):
