@@ -13,6 +13,17 @@ class FootprintField(ma.fields.Field):
             fbd_serialized = FootprintByDeputySchema().dump(
                     FootprintByDeputy.objects.get(id=id)
                     )
+            return fbd_serialized.data['score']
+        except Exception:
+            return 0.0
+
+
+class FootprintTopicsField(ma.fields.Field):
+    def _serialize(self, id, attr, obj):
+        try:
+            fbd_serialized = FootprintByDeputySchema().dump(
+                    FootprintByDeputy.objects.get(id=id)
+                    )
             return fbd_serialized.data['topics']
         except Exception:
             return list()
@@ -40,6 +51,7 @@ class DeputySchema(ma.ModelSchema):
                 }
 
     footprint = FootprintField(attribute='id')
+    footprint_by_topics = FootprintTopicsField(attribute='id')
 
 
 def transform_dates(text):
@@ -100,5 +112,6 @@ class DeputyExtendedSchema(ma.ModelSchema):
                 }
 
     footprint = FootprintField(attribute='id')
+    footprint_by_topics = FootprintTopicsField(attribute='id')
     public_position = PublicPositionsField(attribute='public_position')
     extra = ExtraField(attribute='extra')
