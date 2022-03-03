@@ -96,12 +96,14 @@ class Initiatives():
         return Initiatives.by_query(query)
 
     @staticmethod
-    def get_last_valid_creation_date(topic, deputy):
+    def get_last_valid_creation_date(deputy=None, topic=None):
         query = {
-                'tagged.topics': topic,
-                'author_deputies': deputy,
                 'status': {'$not': {'$in': ['No admitida a trámite', 'Retirada']}},
                 }
+        if topic:
+            query['tagged.topics'] = topic
+        if deputy:
+            query['author_deputies'] = deputy
         result = Initiatives.by_query(query).fields('created').order_by('-created')
         if not result:
             return None
