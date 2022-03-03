@@ -25,6 +25,7 @@ class FootprintByTopic(db.Document):
 class FootprintByDeputy(db.Document):
     id = db.StringField(db_field='_id', primary_key=True)
     name = db.StringField()
+    score = db.FloatField()
     topics = db.EmbeddedDocumentListField(FootprintElement)
     computed_at = db.DateTimeField(default=datetime.now())
     meta = {
