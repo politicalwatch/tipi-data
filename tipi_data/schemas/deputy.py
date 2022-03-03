@@ -1,7 +1,21 @@
-import marshmallow_mongoengine as ma
 import re
 
+import marshmallow_mongoengine as ma
+
 from tipi_data.models.deputy import Deputy
+from tipi_data.models.footprint import FootprintByDeputy
+from tipi_data.schemas.footprint import FootprintByDeputySchema
+
+
+class FootprintField(ma.fields.Field):
+    def _serialize(self, id, attr, obj):
+        try:
+            fbd_serialized = FootprintByDeputySchema().dump(
+                    FootprintByDeputy.objects.get(id=id)
+                    )
+            return fbd_serialized.data['topics']
+        except Exception:
+            return list()
 
 
 class DeputySchema(ma.ModelSchema):
@@ -24,6 +38,9 @@ class DeputySchema(ma.ModelSchema):
                 'url': {'load_only': True},
                 'extra': {'load_only': True},
                 }
+
+    footprint = FootprintField(attribute='id')
+
 
 def transform_dates(text):
     REGEX = re.compile('[A-Z][a-z]{1,2}\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dev)\s(\d{2})\s00:00:00\sCES?T\s(\d{4})')
@@ -59,6 +76,7 @@ class PublicPositionsField(ma.fields.Field):
             clean_positions.append(transform_dates(position))
         return clean_positions
 
+
 class ExtraField(ma.fields.Field):
     def _serialize(self, extra, attr, obj):
         if not extra:
@@ -80,5 +98,7 @@ class DeputyExtendedSchema(ma.ModelSchema):
                 'start_date': {'load_only': True},
                 'end_date': {'load_only': True},
                 }
+
+    footprint = FootprintField(attribute='id')
     public_position = PublicPositionsField(attribute='public_position')
     extra = ExtraField(attribute='extra')
