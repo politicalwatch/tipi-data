@@ -1,10 +1,15 @@
 from tipi_data.models.parliamentarygroup import Gender, \
         Ages, \
-        ParliamentaryGroupComposition
+        ParliamentaryGroupComposition, \
+        ParliamentaryGroup
 from tipi_data.repositories.deputies import Deputies
 
 
 class ParliamentaryGroups:
+    @staticmethod
+    def get_all():
+        return ParliamentaryGroup.objects()
+
     @staticmethod
     def get_composition(short_group):
         return ParliamentaryGroupComposition(
