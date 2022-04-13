@@ -37,15 +37,20 @@ class Tags():
         return tags
 
     @staticmethod
-    def by_name(name):
-        tags = []
-        for topic in Topic.objects():
-            for tag in topic['tags']:
-                if tag['tag'] != name:
-                    continue
-
-                tags = tags + compile_tag(topic, tag)
-        return tags
+    def by_name(topic, tag):
+        try:
+            topic = Topic.objects.get(name=topic)
+            return compile_tag(
+                    topic,
+                    list(filter(
+                        lambda x: x['tag'] == tag,
+                        topic['tags']
+                        ))[0]
+                    )
+        except KeyError:
+            return None
+        except IndexError:
+            return None
 
     @staticmethod
     def by_topic(topic):
