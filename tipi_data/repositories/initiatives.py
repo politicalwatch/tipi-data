@@ -82,8 +82,16 @@ class Initiatives():
         return Initiatives.by_query(query)
 
     @staticmethod
-    def by_tag(tag):
-        return Initiative.objects(tagged__tags__tag=tag)
+    def by_tag(topic, tag):
+        query = {
+                'tagged.tags': {
+                    '$elemMatch': {
+                        'topic': topic,
+                        'tag': tag
+                        }
+                    }
+                }
+        return Initiatives.by_query(query)
 
     @staticmethod
     def get_all_untagged():
