@@ -123,6 +123,8 @@ class Initiatives():
 
     @staticmethod
     def by_query(query):
+        if '$text' in query.keys():
+            return Initiative.objects(__raw__=query).order_by()
         return Initiative.objects(__raw__=query)
 
     @staticmethod
