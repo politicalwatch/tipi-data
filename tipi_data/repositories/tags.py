@@ -55,13 +55,15 @@ class Tags():
     @staticmethod
     def by_topic(topic):
         tags = []
-        for topic in Topic.objects():
-            if topic['name'] != topic:
-                continue
-
+        try:
+            topic = Topic.objects.get(name=topic)
             for tag in topic['tags']:
                 tags = tags + compile_tag(topic, tag)
-        return tags
+            return tags
+        except KeyError:
+            return []
+        except IndexError:
+            return []
 
     @staticmethod
     def by_kb(kb):
