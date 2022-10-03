@@ -48,9 +48,12 @@ class Initiatives():
 
     @staticmethod
     def by_kb(kb):
-        query = {
-            'tagged.knowledgebase': kb,
-            'tagged.topics': {'$not': {'$size': 0}}
+        query = {'tagged': {
+            '$elemMatch': {
+                'knowledgebase': kb,
+                'topics': {'$not': {'$size': 0}}
+                }
+            }
         }
         return Initiatives.by_query(query)
 
