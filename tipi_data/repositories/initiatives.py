@@ -129,6 +129,18 @@ class Initiatives():
     def by_query(query):
         if '$text' in query.keys():
             return Initiative.objects(__raw__=query).order_by()
+
+        if 'tagged.topics' in query.keys() and 'tagged.tags' in query.keys():
+            if 'tagged' not in query:
+                query['tagged'] = {}
+            if '$elemMatch' not in query['tagged']:
+                query['tagged']['$elemMatch'] = {}
+
+            query['tagged']['$elemMatch']['topics'] = query['tagged.topics']
+            query['tagged']['$elemMatch']['tags'] = query['tagged.tags']
+            query.pop('tagged.topics')
+            query.pop('tagged.tags')
+
         return Initiative.objects(__raw__=query)
 
     @staticmethod
