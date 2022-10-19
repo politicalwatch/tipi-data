@@ -32,7 +32,7 @@ class Tagged(db.EmbeddedDocument):
             self.topics.append(topic)
 
     def add_tag(self, topic, subtopic, tag_name, times):
-        if list(filter(lambda tag: tag.tag == tag_name, self.tags)) == []:
+        if list(filter(lambda tag: tag.tag == tag_name and tag.subtopic == subtopic, self.tags)) == []:
             tag = Tag(topic=topic, subtopic=subtopic, tag=tag_name, times=times)
             self.tags.append(tag)
             self.add_topic(topic)
