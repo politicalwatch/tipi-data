@@ -35,18 +35,18 @@ class Deputies:
 
     @staticmethod
     def get_total_between_35_and_49(group):
-        return Deputy.actives(
-                parliamentarygroup=group,
-                age__gte=35,
-                age__lte=49,
-                ).count()
+        return Deputies.get_total_between_ages(35, 49)
 
     @staticmethod
     def get_total_between_50_and_65(group):
+        return Deputies.get_total_between_ages(50, 65)
+
+    @staticmethod
+    def get_total_between_ages(group, gt, lt):
         return Deputy.actives(
                 parliamentarygroup=group,
-                age__gte=50,
-                age__lte=65,
+                age__gte=gt,
+                age__lte=lt,
                 ).count()
 
     @staticmethod
