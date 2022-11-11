@@ -48,6 +48,11 @@ class Deputy(db.Document):
             years -= 1
         self.age = years
 
+    def get_fullname(self):
+        parts = self.name.split(',')
+        name = parts[1] + ' ' + parts[0]
+        return name.strip()
+
     @queryset_manager
     def actives(doc_cls, queryset):
         return queryset.filter(active=True)
