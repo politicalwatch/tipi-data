@@ -1,3 +1,5 @@
+import hashlib
+
 from tipi_data import db
 
 class Amendment(db.Document):
@@ -10,9 +12,10 @@ class Amendment(db.Document):
     author_parliamentarygroups = db.ListField(db.StringField(), default=list)
     justification = db.ListField(db.StringField(), default=list)
     propossed_change = db.ListField(db.StringField(), default=list)
+    from_senate = db.BooleanField()
 
     def set_id(self, id):
-        self.id = self.reference + '/' + id
+        self.id = self.reference + '/' + hashlib.md5(self.bulletin_name.encode()).hexdigest() + '/' + id.strip()
 
     def add_author(self, author):
         self.author_deputies.append(author)
@@ -31,3 +34,9 @@ class Amendment(db.Document):
 
     def set_propossed_change(self, propossed_change):
         self.propossed_change = propossed_change
+
+    def mark_as_congress(self):
+        self.from_senate = False
+
+    def mark_as_senate(self):
+        self.from_senate = True
