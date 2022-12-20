@@ -35,11 +35,11 @@ class Deputies:
 
     @staticmethod
     def get_total_between_35_and_49(group):
-        return Deputies.get_total_between_ages(35, 49)
+        return Deputies.get_total_between_ages(group, 35, 49)
 
     @staticmethod
     def get_total_between_50_and_65(group):
-        return Deputies.get_total_between_ages(50, 65)
+        return Deputies.get_total_between_ages(group, 50, 65)
 
     @staticmethod
     def get_total_between_ages(group, gt, lt):
