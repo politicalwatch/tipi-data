@@ -35,6 +35,8 @@ class InitiativeAlert(db.DynamicDocument):
 
 
 def create_alert(initiative: Initiative):
+    if initiative['initiative_type'] in ['178', '179', '180', '181', '184']:
+        return
     initiative_alert = InitiativeAlert(
             id=initiative['id'],
             title=initiative['title'],
