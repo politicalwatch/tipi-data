@@ -56,4 +56,8 @@ def create_alert(initiative: Initiative, reason: str = ''):
             extra=initiative['extra'],
             reason=reason
             )
-    initiative_alert.save()
+    try:
+        initiative_alert.save(force_insert=True)
+    except Exception:
+        pass
+
