@@ -1,4 +1,5 @@
 from mongoengine import NotUniqueError
+from mongoengine.queryset import DoesNotExist
 
 from tipi_data.models.initiative import Initiative
 from tipi_data.models.alert import Alert, InitiativeAlert
@@ -34,6 +35,13 @@ class InitiativeAlerts():
     def create_alert(initiative: Initiative, reason: str = ''):
         if initiative['initiative_type'] in ['178', '179', '180', '181', '184']:
             return
+
+        try:
+            prev = InitiativeAlert.objects().get(id=initiative['id'])
+            reason = prev['reason']
+        except DoesNotExist:
+            pass
+
         initiative_alert = InitiativeAlert(
                 id=initiative['id'],
                 title=initiative['title'],
@@ -54,10 +62,6 @@ class InitiativeAlerts():
                 reason=reason
                 )
         try:
-            initiative_alert.save(force_insert=True)
-        except NotUniqueError:
-            # The document already exists in the collection
-            # with a diferente 'reason'
-            pass
+            initiative_alert.save()
         except Exception:
             pass
