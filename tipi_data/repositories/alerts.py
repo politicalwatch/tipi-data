@@ -33,9 +33,6 @@ class InitiativeAlerts():
 
     @staticmethod
     def create_alert(initiative: Initiative, reason: str = ''):
-        if initiative['initiative_type'] in ['178', '179', '180', '181', '184']:
-            return
-
         try:
             prev = InitiativeAlert.objects().get(id=initiative['id'])
             reason = prev['reason']
