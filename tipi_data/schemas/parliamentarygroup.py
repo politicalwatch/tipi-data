@@ -5,34 +5,28 @@ from tipi_data.models.footprint import FootprintByParliamentaryGroup
 from tipi_data.schemas.footprint import FootprintByParliamentaryGroupSchema
 
 
-class FootprintField(ma.fields.Field):
-    def _serialize(self, id, attr, obj):
-        try:
-            fbpg_serialized = FootprintByParliamentaryGroupSchema().dump(
-                FootprintByParliamentaryGroup.objects.get(id=id)
-            )
-            return fbpg_serialized.data["score"]
-        except Exception:
-            return 0.0
-
-
-class FootprintTopicsField(ma.fields.Field):
-    def _serialize(self, id, attr, obj):
-        try:
-            fbd_serialized = FootprintByParliamentaryGroupSchema().dump(
-                FootprintByParliamentaryGroup.objects.get(id=id)
-            )
-            return fbd_serialized.data["topics"]
-        except Exception:
-            return list()
-
-
 class ParliamentaryGroupSchema(ma.ModelSchema):
     class Meta:
         model = ParliamentaryGroup
 
-    footprint = FootprintField(attribute="id")
-    footprint_by_topics = FootprintTopicsField(attribute="id")
+    footprint = ma.fields.Method("get_footprint")
+    footprint_by_topics = ma.fields.Method("get_footprint_by_topics")
+
+    def get_footprint(self, obj):
+        try:
+            fbd = FootprintByParliamentaryGroup.objects.get(id=obj.id)
+            fbd_serialized = FootprintByParliamentaryGroupSchema().dump(fbd)
+            return fbd_serialized["score"]
+        except Exception:
+            return 0.0
+
+    def get_footprint_by_topics(self, obj):
+        try:
+            fbd = FootprintByParliamentaryGroup.objects.get(id=obj.id)
+            fbd_serialized = FootprintByParliamentaryGroupSchema().dump(fbd)
+            return fbd_serialized["topics"]
+        except Exception:
+            return list()
 
 
 class ParliamentaryGroupCompactSchema(ma.ModelSchema):
