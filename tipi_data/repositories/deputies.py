@@ -55,3 +55,25 @@ class Deputies:
                 parliamentarygroup=group,
                 age__gt=65
                 ).count()
+
+    @staticmethod
+    def get_birthdays():
+        pipeline = [
+                { '$addFields': {
+                    'birthDay': { '$dayOfMonth': '$birthdate' },
+                    'birthMonth': { '$month': '$birthdate' },
+                    'todayDay': { '$dayOfMonth': datetime.today() },
+                    'todayMonth': { '$month': datetime.today() }
+                    }
+                 },
+                { '$match': {
+                    '$expr': {
+                        '$and': [
+                            { '$eq': ['$birthDay', '$todayDay'] },
+                            { '$eq': ['$birthMonth', '$todayMonth'] }
+                            ]
+                        }
+                    }
+                 }
+                ]
+        return Deputy.actives().aggregate(*pipeline)
