@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from tipi_data.models.deputy import Deputy
 
 
