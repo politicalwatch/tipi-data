@@ -62,6 +62,7 @@ class Deputies:
     def get_birthdays():
         pipeline = [
                 { '$addFields': {
+                    'id': '$_id',
                     'birthDay': { '$dayOfMonth': '$birthdate' },
                     'birthMonth': { '$month': '$birthdate' },
                     'todayDay': { '$dayOfMonth': datetime.today() },
@@ -76,6 +77,10 @@ class Deputies:
                             ]
                         }
                     }
-                 }
+                 },
+                { '$unset': ['_id', 'birthDay', 'birthMonth', 'todayDay', 'todayMonth'] }
                 ]
-        return Deputy.actives().aggregate(*pipeline)
+        return [
+                Deputy(**doc)
+                for doc in Deputy.actives().aggregate(*pipeline)
+                ]
