@@ -1,14 +1,10 @@
 from tipi_data.models.initiative import Initiative
 
 
-class Initiatives():
+class Initiatives:
     @staticmethod
     def get(id):
         return Initiative.objects().get(id=id)
-
-    @staticmethod
-    def get_old(id):
-        return Initiative.objects().get(oldid=id)
 
     @staticmethod
     def get_all():
@@ -17,43 +13,43 @@ class Initiatives():
     @staticmethod
     def get_all_short_untagged():
         query = {
-                '$and': [
-                    {'$or': [
-                        {'tagged': []},
-                        {'tagged': {'$exists': False}},
-                    ]},
-                    {'content.100000': {'$exists': False}}
-                ]
-            }
+            "$and": [
+                {
+                    "$or": [
+                        {"tagged": []},
+                        {"tagged": {"$exists": False}},
+                    ]
+                },
+                {"content.100000": {"$exists": False}},
+            ]
+        }
         return Initiatives.by_query(query)
 
     @staticmethod
     def get_all_long_untagged():
         query = {
-                '$and': [
-                    {'$or': [
-                        {'tagged': []},
-                        {'tagged': {'$exists': False}},
-                    ]},
-                    {'content.100000': {'$exists': True}}
-                ]
-            }
-        return Initiatives.by_query(query)
-
-    @staticmethod
-    def get_all_without_answers():
-        query = {
-            'initiative_type_alt': {'$ne': 'Respuesta'}
+            "$and": [
+                {
+                    "$or": [
+                        {"tagged": []},
+                        {"tagged": {"$exists": False}},
+                    ]
+                },
+                {"content.100000": {"$exists": True}},
+            ]
         }
         return Initiatives.by_query(query)
 
     @staticmethod
+    def get_all_without_answers():
+        query = {"initiative_type_alt": {"$ne": "Respuesta"}}
+        return Initiatives.by_query(query)
+
+    @staticmethod
     def by_kb(kb):
-        query = {'tagged': {
-            '$elemMatch': {
-                'knowledgebase': kb,
-                'topics': {'$not': {'$size': 0}}
-                }
+        query = {
+            "tagged": {
+                "$elemMatch": {"knowledgebase": kb, "topics": {"$not": {"$size": 0}}}
             }
         }
         return Initiatives.by_query(query)
@@ -61,16 +57,16 @@ class Initiatives():
     @staticmethod
     def by_kb_untagged(kb):
         query = {
-            'tagged.knowledgebase': { '$ne': kb},
+            "tagged.knowledgebase": {"$ne": kb},
         }
         return Initiatives.by_query(query)
 
     @staticmethod
     def by_kb_short_untagged(kb):
         query = {
-            '$and': [
-                {'tagged.knowledgebase': { '$ne': kb}},
-                {'content.100000': {'$exists': False}}
+            "$and": [
+                {"tagged.knowledgebase": {"$ne": kb}},
+                {"content.100000": {"$exists": False}},
             ]
         }
         return Initiatives.by_query(query)
@@ -78,56 +74,48 @@ class Initiatives():
     @staticmethod
     def by_kb_long_untagged(kb):
         query = {
-            '$and': [
-                {'tagged.knowledgebase': { '$ne': kb}},
-                {'content.100000': {'$exists': True}}
+            "$and": [
+                {"tagged.knowledgebase": {"$ne": kb}},
+                {"content.100000": {"$exists": True}},
             ]
         }
         return Initiatives.by_query(query)
 
     @staticmethod
     def by_tag(topic, tag):
-        query = {
-                'tagged.tags': {
-                    '$elemMatch': {
-                        'topic': topic,
-                        'tag': tag
-                        }
-                    }
-                }
+        query = {"tagged.tags": {"$elemMatch": {"topic": topic, "tag": tag}}}
         return Initiatives.by_query(query)
 
     @staticmethod
     def get_all_untagged():
         query = {
-                '$or': [
-                    {'tagged': []},
-                    {'tagged': {'$exists': False}},
-                    ]
-                }
+            "$or": [
+                {"tagged": []},
+                {"tagged": {"$exists": False}},
+            ]
+        }
         return Initiatives.by_query(query)
 
     @staticmethod
-    def get_last_valid_creation_date(entity=None, topic=None, typeof='deputy'):
+    def get_last_valid_creation_date(entity=None, topic=None, typeof="deputy"):
         query = {
-                'status': {'$not': {'$in': ['No admitida a trámite', 'Retirada']}},
-                }
+            "status": {"$not": {"$in": ["No admitida a trámite", "Retirada"]}},
+        }
         if topic:
-            query['tagged.topics'] = topic
+            query["tagged.topics"] = topic
         if entity:
-            if typeof == 'deputy':
-                query['author_deputies'] = entity
-            if typeof == 'parliamentarygroup':
-                query['author_parliamentarygroups'] = entity
-        result = Initiatives.by_query(query).fields('created').order_by('-created')
+            if typeof == "deputy":
+                query["author_deputies"] = entity
+            if typeof == "parliamentarygroup":
+                query["author_parliamentarygroups"] = entity
+        result = Initiatives.by_query(query).fields("created").order_by("-created")
         if not result:
             return None
-        return result.first()['created']
-
+        return result.first()["created"]
 
     @staticmethod
     def by_query(query):
-        if '$text' in query.keys():
+        if "$text" in query.keys():
             return Initiative.objects(__raw__=query).order_by()
 
         return Initiative.objects(__raw__=query)
