@@ -13,6 +13,20 @@ class Footprints():
         return FootprintByTopic.objects().get(name=topic)
 
     @staticmethod
+     def get_max_by_all_topics():
+         pipeline = [
+                 {
+                     "$project": {
+                         "_id": 0,
+                         "name": 1,
+                         "deputy": {"$arrayElemAt": ["$deputies", 0]},
+                         "parliamentarygroup": {"$arrayElemAt": ["$parliamentarygroups", 0]}
+                         }
+                     }
+                 ]
+         return FootprintByTopic.objects().aggregate(*pipeline)
+
+    @staticmethod
     def get_all_deputies():
         return FootprintByDeputy.objects()
 
