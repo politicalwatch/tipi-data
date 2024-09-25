@@ -13,7 +13,7 @@ class Footprints():
         return FootprintByTopic.objects().get(name=topic)
 
     @staticmethod
-     def get_max_by_all_topics():
+    def get_max_by_all_topics():
          pipeline = [
                  {
                      "$project": {
