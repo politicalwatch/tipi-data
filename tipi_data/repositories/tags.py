@@ -31,7 +31,7 @@ def compile_tag(topic, tag):
             'compiletag': regex.compile('(?i)' + tag['regex'])
         }]
     except regex.error as e:
-        print(e, tag['regex'])
+        print(e, topic['name'], tag['subtopic'], tag['regex'])
 
 class Tags():
     @staticmethod
