@@ -1,7 +1,7 @@
 from tipi_data.models.topic import Topic
 
 import itertools
-import pcre
+import regex
 
 def compile_tag(topic, tag):
     delimiter = '.*?' if '.*?' in tag['regex'] else '.*'
@@ -14,7 +14,7 @@ def compile_tag(topic, tag):
                 'tag': tag['tag'],
                 'knowledgebase': topic['knowledgebase'],
                 'public': topic['public'],
-                'compiletag': pcre.compile('(?i)' + delimiter.join(permutation))
+                'compiletag': regex.compile('(?i)' + delimiter.join(permutation))
             })
         return tags
 
@@ -24,7 +24,7 @@ def compile_tag(topic, tag):
         'tag': tag['tag'],
         'knowledgebase': topic['knowledgebase'],
         'public': topic['public'],
-        'compiletag': pcre.compile('(?i)' + tag['regex'])
+        'compiletag': regex.compile('(?i)' + tag['regex'])
     }]
 
 class Tags():

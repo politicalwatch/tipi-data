@@ -11,7 +11,7 @@ setup(
         "marshmallow==3.21.2",
         "marshmallow-mongoengine==0.31.2",
         "mongoengine==0.28.2",
-        "python-pcre==0.7",
+        "regex==2024.11.6",
         "natsort==7.1.1",
         "python-slugify==8.0.4",
     ],
