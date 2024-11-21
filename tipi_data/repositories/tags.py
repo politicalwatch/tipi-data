@@ -39,7 +39,9 @@ class Tags():
         tags = []
         for topic in Topic.objects():
             for tag in topic['tags']:
-                tags = tags + compile_tag(topic, tag)
+                compiled_tags = compile_tag(topic, tag)
+                if compiled_tags:
+                    tags = tags + compiled_tags
         return tags
 
     @staticmethod
