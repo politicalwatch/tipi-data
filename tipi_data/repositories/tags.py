@@ -8,24 +8,30 @@ def compile_tag(topic, tag):
     if tag['shuffle']:
         tags = []
         for permutation in itertools.permutations(tag['regex'].split(delimiter)):
-            tags.append({
-                'topic': topic['name'],
-                'subtopic': tag['subtopic'],
-                'tag': tag['tag'],
-                'knowledgebase': topic['knowledgebase'],
-                'public': topic['public'],
-                'compiletag': regex.compile('(?i)' + delimiter.join(permutation))
-            })
+            try:
+                tags.append({
+                    'topic': topic['name'],
+                    'subtopic': tag['subtopic'],
+                    'tag': tag['tag'],
+                    'knowledgebase': topic['knowledgebase'],
+                    'public': topic['public'],
+                    'compiletag': regex.compile('(?i)' + delimiter.join(permutation))
+                })
+            except regex.error as e:
+                print(e, tag['regex'])
         return tags
 
-    return [{
-        'topic': topic['name'],
-        'subtopic': tag['subtopic'],
-        'tag': tag['tag'],
-        'knowledgebase': topic['knowledgebase'],
-        'public': topic['public'],
-        'compiletag': regex.compile('(?i)' + tag['regex'])
-    }]
+    try:
+        return [{
+            'topic': topic['name'],
+            'subtopic': tag['subtopic'],
+            'tag': tag['tag'],
+            'knowledgebase': topic['knowledgebase'],
+            'public': topic['public'],
+            'compiletag': regex.compile('(?i)' + tag['regex'])
+        }]
+    except regex.error as e:
+        print(e, tag['regex'])
 
 class Tags():
     @staticmethod
