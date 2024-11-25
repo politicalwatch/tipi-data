@@ -12,7 +12,7 @@ setup(
         "marshmallow-mongoengine==0.31.2",
         "mongoengine==0.29.1",
         "regex==2024.11.6",
-        "natsort==7.1.1",
+        "natsort==8.4.0",
         "python-slugify==8.0.4",
     ],
 )
