@@ -20,7 +20,7 @@ class Footprints:
             {
                 "$project": {
                     "_id": 0,
-                    "topic": "$name",
+                    "name": "$name",
                     "deputy": {
                         "max": {
                             "$first": {
