@@ -1,9 +1,11 @@
-from tipi_data.models.footprint import FootprintByTopic, \
-        FootprintByDeputy, \
-        FootprintByParliamentaryGroup
+from tipi_data.models.footprint import (
+    FootprintByTopic,
+    FootprintByDeputy,
+    FootprintByParliamentaryGroup,
+)
 
 
-class Footprints():
+class Footprints:
     @staticmethod
     def get_all_topics():
         return FootprintByTopic.objects()
@@ -13,18 +15,87 @@ class Footprints():
         return FootprintByTopic.objects().get(name=topic)
 
     @staticmethod
-    def get_max_by_all_topics():
-         pipeline = [
-                 {
-                     "$project": {
-                         "_id": 0,
-                         "name": 1,
-                         "deputy": {"$arrayElemAt": ["$deputies", 0]},
-                         "parliamentarygroup": {"$arrayElemAt": ["$parliamentarygroups", 0]}
-                         }
-                     }
-                 ]
-         return FootprintByTopic.objects().aggregate(*pipeline)
+    def get_range_by_all_topics():
+        pipeline = [
+            {
+                "$project": {
+                    "_id": 0,
+                    "topic": "$name",
+                    "deputy": {
+                        "max": {
+                            "$first": {
+                                "$filter": {
+                                    "input": {
+                                        "$sortArray": {
+                                            "input": "$deputies",
+                                            "sortBy": {"score": -1},
+                                        }
+                                    },
+                                    "as": "deputy",
+                                    "cond": {
+                                        "$eq": [
+                                            "$$deputy.score",
+                                            {"$max": "$deputies.score"},
+                                        ]
+                                    },
+                                }
+                            }
+                        },
+                        "min": {
+                            "$first": {
+                                "$filter": {
+                                    "input": {
+                                        "$sortArray": {
+                                            "input": "$deputies",
+                                            "sortBy": {"score": 1},
+                                        }
+                                    },
+                                    "as": "deputy",
+                                    "cond": {"$gt": ["$$deputy.score", 0]},
+                                }
+                            }
+                        },
+                    },
+                    "parliamentarygroup": {
+                        "max": {
+                            "$first": {
+                                "$filter": {
+                                    "input": {
+                                        "$sortArray": {
+                                            "input": "$parliamentarygroups",
+                                            "sortBy": {"score": -1},
+                                        }
+                                    },
+                                    "as": "pg",
+                                    "cond": {
+                                        "$eq": [
+                                            "$$pg.score",
+                                            {"$max": "$parliamentarygroups.score"},
+                                        ]
+                                    },
+                                }
+                            }
+                        },
+                        "min": {
+                            "$first": {
+                                "$filter": {
+                                    "input": {
+                                        "$sortArray": {
+                                            "input": "$parliamentarygroups",
+                                            "sortBy": {"score": 1},
+                                        }
+                                    },
+                                    "as": "pg",
+                                    "cond": {"$gt": ["$$pg.score", 0]},
+                                }
+                            }
+                        },
+                    },
+                }
+            },
+            {"$sort": {"topic": 1}},
+        ]
+        return FootprintByTopic.objects().aggregate(*pipeline)
 
     @staticmethod
     def get_all_deputies():
