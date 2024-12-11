@@ -19,9 +19,24 @@ class Tag(db.EmbeddedDocument):
         }
 
 
+class TopicAlignment(db.EmbeddedDocument):
+    topic = db.StringField()
+    percentage = db.FloatField()
+
+    def __str__(self):
+        return f"{self.topic}: {self.percentage}%"
+
+    def serialize(self):
+        return {
+                'topic': self.topic,
+                'percentage': self.percentage
+                }
+
+
 class Tagged(db.EmbeddedDocument):
     knowledgebase = db.StringField()
     topics = db.ListField(db.StringField(), default=list)
+    topic_alignment = db.EmbeddedDocumentListField(TopicAlignment, default=list)
     tags = db.EmbeddedDocumentListField(Tag, default=list)
 
     def __str__(self):
@@ -56,6 +71,7 @@ class Tagged(db.EmbeddedDocument):
         return {
             'knowledgebase': self.knowledgebase,
             'topics': self.topics,
+            'topic_alignment': self.topic_alignment,
             'tags': list(map(lambda tag_set: tag_set.serialize(), self.tags))
         }
 
