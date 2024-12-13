@@ -71,7 +71,7 @@ class Tagged(db.EmbeddedDocument):
         return {
             'knowledgebase': self.knowledgebase,
             'topics': self.topics,
-            'topic_alignment': self.topic_alignment,
+            'topic_alignment': list(map(lambda ta: ta.serialize(), self.topic_alignment)),
             'tags': list(map(lambda tag_set: tag_set.serialize(), self.tags))
         }
 
